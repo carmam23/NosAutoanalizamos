@@ -14,11 +14,16 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r}
+#Importación de datos de un archivo tsv (separado por tabuladores):
+
 library(readr)
 datos <- read_delim("NosAutoanalizamos2024 - Hoja1.tsv", 
     delim = "\t", escape_double = FALSE, 
-    trim_ws = TRUE)
-str(datos)
-View(datos)
+    trim_ws = TRUE, skip = 25)
+```
+```{r}
+#Averiguamos la codificación del fichero:
+
+guess_encoding("NosAutoanalizamos2024 - Hoja1.tsv")
 ```
 
