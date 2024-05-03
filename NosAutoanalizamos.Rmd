@@ -10,6 +10,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## R Markdown
+```{r}
+library(tidyverse)
+library(lubridate)
+```
 
 
 
@@ -25,5 +29,50 @@ datos <- read_delim("NosAutoanalizamos2024 - Hoja1.tsv",
 #Averiguamos la codificación del fichero:
 
 guess_encoding("NosAutoanalizamos2024 - Hoja1.tsv")
+```
+
+```{r}
+#Comprobamos los valores distintos de una columna del data frame
+
+unique(datos$Sex)
+
+#Nos sale "Exer". Es debido a la última fila de nuestro data frame que es diferente. La eliminamos:
+datos <- datos %>%
+  slice(-66)
+
+#Otra forma de hacerlo
+#datos <- datos[(1:nrow(datos)-1),]
+
+#Comprobamos ahora:
+unique(datos$Sex)
+
+#Ahora, vemos que hay 2 valores distintos, que es lo que buscábamos.
+```
+
+```{r}
+#Vemos los valores de una columna en concreto, para ver si los datos que tenemos son válidos para nosotros:
+datos$Wr.Hnd
+datos$NW.Hnd
+
+# [1] "FechaNac(DD-MM-YYY)" "Id"                  "Age"                 "Sex"                 "Wr.Hnd"             
+#  [6] "NW.Hnd"              "Fold"                "Pulse"               "Clap"                "Exer"               
+# [11] "Smoke"               "Height"              "ALG"                 "ANM"                 "FP"                 
+# [16] "DCS"                 "MD"                  "HSt"                 "Hwork"               "Comentarios"
+
+VarFactor <- c("Id", "Sex", "NW.Hnd", "Fold", "Clap", "Smoke")
+VarNum <- c("Age", "Wr.Hnd", "Pulse", "Exer", "Height", "ALG", "ANM", "FP", "DCS", "MD", "Hwork", "HSt")
+VarTexto <- c("Comentarios")
+VarFecha <- c("FechaNac(DD-MM-YYY)")
+```
+## ANALIZO LAS CATEGGORÍAS DE LAS VARIABLES DE TIPO FACTOR
+
+```{r}
+sapply(datos[,VarFactor], unique)
+```
+
+```{r}
+datos$Wr.Hnd <- as.numeric(datos$Wr.Hnd)
+datos$`FechaNac(DD-MM-YYY)` <- as.Date(datos$`FechaNac(DD-MM-YYY)`)
+
 ```
 
